@@ -27,23 +27,41 @@ public class Controlador implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent event) {
-        Feligres diezmo;
+        double diezmo;
         try {
-            if (!event.getActionCommand().contentEquals("Guardar")) {
+            switch (event.getActionCommand()) {
+                case "Guardar":
+                    String cedula = this.vistaFeligres.txtCedula.getText();
+                    String Nombre = this.vistaFeligres.txtNombre.getText();
+                    String Direcion = this.vistaFeligres.txtDireccion.getText();
+                    String Telefono = this.vistaFeligres.txtTelefono.getText();
+                    int estrato = Integer.parseInt(this.vistaFeligres.txtEstrato.getText());
+                    String estado = this.vistaFeligres.txtEstado.getText();
 
-                if (event.getActionCommand().contentEquals("Mostar Datos")) {
-                } else if (event.getActionCommand().contentEquals("Pagar Diezmo")) {
-                    
-                    if (feligres.estado.equalsIgnoreCase("Deudor")) {
-                        
-                        diezmo =Feligres.class.cast(JOptionPane.showInputDialog("Monto a pagar $" + feligres.controlDiezmo() + "\nIngrese su monto a pagar: "));
-                        
-                        if (!diezmo.equals(feligres.estado)) {
-                        } else {
-                            feligres.setEstado("Cumplido");
+                    System.out.println("Se guardaron los datos");
+
+                    feligres.setCedula(cedula);
+                    feligres.setNombre(Nombre);
+                    feligres.setDirecion(Direcion);
+                    feligres.setTelefono(Telefono);
+                    feligres.setEstrato(estrato);
+                    feligres.setEstado(estado);
+                    break;
+                case "Pagar Diezmo":
+
+                    if (feligres.getEstado().equalsIgnoreCase("Cumplido")) {
+                        JOptionPane.showMessageDialog(null, "Cumple con su Diezmo");
+                    } else {
+
+                        diezmo = Double.parseDouble(JOptionPane.showInputDialog("Monto a pagar $" + feligres.controlDiezmo() + "\nIngrese su monto a pagar: "));
+
+                        if (diezmo == feligres.controlDiezmo()) {
+
+                            vistaFeligres.txtEstado.setText("Cumplido");
                         }
                     }
-                } else if (event.getActionCommand().contentEquals("Limpiar")) {
+                    break;
+                case "Limpiar":
                     vistaFeligres.txtCedula.setText(" ");
                     vistaFeligres.txtNombre.setText(" ");
                     vistaFeligres.txtDireccion.setText(" ");
@@ -51,21 +69,16 @@ public class Controlador implements ActionListener {
                     vistaFeligres.txtEstrato.setText(" ");
                     vistaFeligres.txtEstado.setText(" ");
                     vistaFeligres.txaResultado.setText("");
-                } else {
-                    this.vistaFeligres.txaResultado.setText("Cedula : " + vistaFeligres.txtCedula.getText() + "\nNombre: " + feligres.getNombre()
-                            + "\nDireccion: " + feligres.getDirecion() + "\nTelefono: " + feligres.getTelefono() + "\nEstrato: " + feligres.getEstrato()
-                            + "\nEstado: " + feligres.getEstado());
-                }
-            } else {
-                int estrato = Integer.parseInt(this.vistaFeligres.txtEstrato.getText());
+                    break;
+                default:
+                    if (event.getActionCommand().contentEquals("Mostrar Datos")) {
 
-                feligres.setCedula(this.vistaFeligres.txtCedula.getText());
-                feligres.setNombre(this.vistaFeligres.txtNombre.getText());
-                feligres.setDirecion(this.vistaFeligres.txtDireccion.getText());
-                feligres.setTelefono(this.vistaFeligres.txtTelefono.getText());
-                feligres.setEstrato(estrato);
-                feligres.setEstado(this.vistaFeligres.txtEstado.getText());
-                System.out.println("Se guardaron los datos");
+                        this.vistaFeligres.txaResultado.setText("Cedula : " + feligres.getCedula() + "\nNombre: " + feligres.getNombre()
+                                + "\nDireccion: " + feligres.getDirecion() + "\nTelefono: " + feligres.getTelefono() + "\nEstrato: " + feligres.getEstrato()
+                                + "\nEstado: " + feligres.getEstado());
+
+                    }
+                    break;
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Algo salio mal");
